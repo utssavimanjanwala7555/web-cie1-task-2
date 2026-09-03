@@ -1,0 +1,49 @@
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container">
+
+    <div class="about-container">
+
+        <h1>📚 About College Library</h1>
+
+        <p>
+            The College Library Book Issue System is an
+            ASP.NET Core MVC application designed to manage
+            books and library members.
+        </p>
+
+        <h2>System Features</h2>
+
+        <ul>
+            <li>View available books</li>
+            <li>Search books</li>
+            <li>View book details</li>
+            <li>Issue books to students</li>
+            <li>Return books</li>
+            <li>Track issue and due dates</li>
+            <li>Calculate overdue fines</li>
+            <li>Manage library members</li>
+        </ul>
+
+        <h2>Issue Policy</h2>
+
+        <p>
+            Students can borrow a book for a maximum period
+            of 14 days.
+        </p>
+
+        <p>
+            An overdue fine of ₹5 per day is charged after
+            the due date.
+        </p>
+
+        <a asp-action="Index"
+           class="btn btn-primary">
+            Go to Library
+        </a>
+
+    </div>
+
+</div>

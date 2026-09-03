@@ -1,0 +1,101 @@
+@model LibraryManagementMVC.Models.Book
+
+@{
+    ViewData["Title"] = "Issue Book";
+    var members = ViewBag.Members as List<LibraryManagementMVC.Models.LibraryMember>;
+}
+
+<div class="container">
+
+    <div class="form-container">
+
+        <h1>📚 Issue Book</h1>
+
+        <div class="book-summary">
+
+            <h2>@Model.Title</h2>
+
+            <p>
+                <strong>Author:</strong>
+                @Model.Author
+            </p>
+
+            <p>
+                <strong>ISBN:</strong>
+                @Model.ISBN
+            </p>
+
+            <p>
+                <strong>Category:</strong>
+                @Model.Category
+            </p>
+
+        </div>
+
+        <form asp-action="IssueBook" method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   name="bookId"
+                   value="@Model.Id" />
+
+            <div class="form-group">
+
+                <label for="memberId">
+                    Select Student
+                </label>
+
+                <select name="memberId"
+                        id="memberId"
+                        class="form-control"
+                        required>
+
+                    <option value="">
+                        -- Select Student --
+                    </option>
+
+                    @foreach (var member in members ?? new List<LibraryManagementMVC.Models.LibraryMember>())
+                    {
+                        <option value="@member.Id">
+                            @member.Name - @member.StudentId (@member.Course)
+                        </option>
+                    }
+
+                </select>
+
+            </div>
+
+            <div class="issue-info">
+
+                <p>
+                    <strong>Issue Period:</strong>
+                    14 Days
+                </p>
+
+                <p>
+                    <strong>Fine:</strong>
+                    ₹5 per overdue day
+                </p>
+
+            </div>
+
+            <div class="form-buttons">
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Issue Book
+                </button>
+
+                <a asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

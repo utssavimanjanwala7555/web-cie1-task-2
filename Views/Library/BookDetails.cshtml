@@ -1,0 +1,134 @@
+@model LibraryManagementMVC.Models.Book
+
+@{
+    ViewData["Title"] = "Book Details";
+    var member = ViewBag.Member as LibraryManagementMVC.Models.LibraryMember;
+    decimal fine = ViewBag.Fine ?? 0;
+}
+
+<div class="container">
+
+    <div class="details-container">
+
+        <div class="book-large-icon">
+            📖
+        </div>
+
+        <h1>@Model.Title</h1>
+
+        <div class="details-table">
+
+            <div>
+                <strong>Book ID</strong>
+                <span>@Model.Id</span>
+            </div>
+
+            <div>
+                <strong>Title</strong>
+                <span>@Model.Title</span>
+            </div>
+
+            <div>
+                <strong>Author</strong>
+                <span>@Model.Author</span>
+            </div>
+
+            <div>
+                <strong>ISBN</strong>
+                <span>@Model.ISBN</span>
+            </div>
+
+            <div>
+                <strong>Category</strong>
+                <span>@Model.Category</span>
+            </div>
+
+            <div>
+                <strong>Status</strong>
+
+                <span>
+                    @if (Model.IsAvailable)
+                    {
+                        <span class="status available">
+                            Available
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="status issued">
+                            Issued
+                        </span>
+                    }
+                </span>
+            </div>
+
+            @if (!Model.IsAvailable)
+            {
+                <div>
+                    <strong>Issued To</strong>
+                    <span>
+                        @(member?.Name ?? "Unknown")
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Student ID</strong>
+                    <span>
+                        @(member?.StudentId ?? "-")
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Issue Date</strong>
+                    <span>
+                        @Model.IssueDate?.ToString("dd-MM-yyyy")
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Due Date</strong>
+                    <span>
+                        @Model.DueDate?.ToString("dd-MM-yyyy")
+                    </span>
+                </div>
+
+                <div>
+                    <strong>Current Fine</strong>
+                    <span>
+                        ₹@fine.ToString("0.00")
+                    </span>
+                </div>
+            }
+
+        </div>
+
+        <div class="details-buttons">
+
+            @if (Model.IsAvailable)
+            {
+                <a asp-action="IssueBook"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-success">
+                    Issue Book
+                </a>
+            }
+            else
+            {
+                <a asp-action="ReturnBook"
+                   asp-route-id="@Model.Id"
+                   class="btn btn-warning"
+                   onclick="return confirm('Are you sure you want to return this book?');">
+                    Return Book
+                </a>
+            }
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back to Library
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

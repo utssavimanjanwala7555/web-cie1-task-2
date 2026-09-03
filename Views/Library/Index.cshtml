@@ -1,0 +1,133 @@
+@model IEnumerable<LibraryManagementMVC.Models.Book>
+
+@{
+    ViewData["Title"] = "College Library";
+}
+
+<div class="container">
+
+    <div class="library-header">
+        <h1>📚 College Library</h1>
+        <p>Library Book Issue Management System</p>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    <div class="search-box">
+
+        <form asp-controller="Library"
+              asp-action="Index"
+              method="get">
+
+            <input type="text"
+                   name="search"
+                   value="@ViewBag.Search"
+                   placeholder="Search by title, author, ISBN or category..."
+                   class="form-control" />
+
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+            <a asp-action="Index" class="btn btn-secondary">
+                Clear
+            </a>
+
+        </form>
+
+    </div>
+
+    <div class="book-grid">
+
+        @foreach (var book in Model)
+        {
+            <div class="book-card">
+
+                <div class="book-icon">
+                    📖
+                </div>
+
+                <h2>@book.Title</h2>
+
+                <p>
+                    <strong>Author:</strong>
+                    @book.Author
+                </p>
+
+                <p>
+                    <strong>ISBN:</strong>
+                    @book.ISBN
+                </p>
+
+                <p>
+                    <strong>Category:</strong>
+                    @book.Category
+                </p>
+
+                @if (book.IsAvailable)
+                {
+                    <span class="status available">
+                        Available
+                    </span>
+                }
+                else
+                {
+                    <span class="status issued">
+                        Issued
+                    </span>
+                }
+
+                <div class="card-buttons">
+
+                    <a asp-action="BookDetails"
+                       asp-route-id="@book.Id"
+                       class="btn btn-info">
+                        Details
+                    </a>
+
+                    @if (book.IsAvailable)
+                    {
+                        <a asp-action="IssueBook"
+                           asp-route-id="@book.Id"
+                           class="btn btn-success">
+                            Issue Book
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-action="ReturnBook"
+                           asp-route-id="@book.Id"
+                           class="btn btn-warning"
+                           onclick="return confirm('Are you sure you want to return this book?');">
+                            Return Book
+                        </a>
+                    }
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="no-books">
+            <h3>No books found.</h3>
+            <p>Try another search term.</p>
+        </div>
+    }
+
+</div>
